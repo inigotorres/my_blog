@@ -1,2 +1,26 @@
-<h1>Todos#index</h1>
-<p>Find me in app/views/todos/index.html.erb</p>
+<title>Shared Todo App </title>
+<div class = "container"> 
+  <div class = "row">
+    <div class = "span4">
+      <h1>What does Iñigo have to do?</h1>
+      <hr>
+      <%= form_tag("/todos/add", :method=>"post") do %>
+        <%= text_field_tag(:todo_text) %>
+        <%= submit_tag("Add todo", :class=>"btn") %>
+      <% end %>
+      <p>The todos are as follows:</p>
+      <% if @todo_items.empty? %>
+        <%= "You have nothing to do!" %>
+      <% else %>
+        <div class = "well">
+          <ul>
+        <% @todo_items.each do |t| %>
+          <li> <%= t.todo_item %> </li>
+      <% end %>
+      </ul>
+      </div> <!-- well -->
+      <a href="/todos/delete">Delete last task</a>
+    </div> <!-- span4 -->
+  </div> <!-- row -->
+</div> <!-- container -->
+<% end %>
