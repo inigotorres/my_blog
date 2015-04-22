@@ -2,25 +2,39 @@
 <div class = "container"> 
   <div class = "row">
     <div class = "span4">
+    
       <h1>What does Iñigo have to do?</h1>
+
       <hr>
-      <%= form_tag("/todos/add", :method=>"post") do %>
-        <%= text_field_tag(:todo_text) %>
-        <%= submit_tag("Add todo", :class=>"btn") %>
+
+      <%= form_for @new_todo, :url => { :action => "add"} do |f| %>
+        <%= f.text_field :todo_item %>
+        <%= f.submit "Add todo", class: "btn btn-primary" %>
       <% end %>
+     
       <p>The todos are as follows:</p>
-      <% if @todo_items.empty? %>
-        <%= "You have nothing to do!" %>
-      <% else %>
-        <div class = "well">
-          <ul>
-        <% @todo_items.each do |t| %>
-          <li> <%= t.todo_item %> </li>
-      <% end %>
-      </ul>
-      </div> <!-- well -->
+ 
+      <div class = "well">
+        <% if @todo_items.empty? %>
+          <%= "You have nothing to do!" %>
+        <% else %>
+          <%= form_tag("/todos/complete/", :method => "post") do %>
+            <ul style="list-style-type:none;">
+              <% @todo_items.each do |t| %> 
+                <% if t.completed == true %>
+ 		  <li style="color:grey;"> <%= check_box_tag "todos_checkbox[]",t.id %> <strike><%= t.todo_item %></strike></li>
+		<% else %>
+		  <li> <%= check_box_tag "todos_checkbox[]",t.id %> <%= t.todo_item %> </li>
+		<% end %>
+              <% end %>
+            </ul>
+          <%= submit_tag("Complete Todos", :class=>"btn btn-success") %>
+          <% end %>
+        <% end %>
+      </div> <!--well-->
+      
       <a href="/todos/delete">Delete last task</a>
+    
     </div> <!-- span4 -->
   </div> <!-- row -->
 </div> <!-- container -->
-<% end %>
